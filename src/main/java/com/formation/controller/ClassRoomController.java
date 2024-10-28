@@ -19,7 +19,11 @@ import com.formation.entity.ClassRoom;
 import com.formation.service.ClassRoomService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -32,57 +36,93 @@ public class ClassRoomController {
     private ClassRoomService classRoomService;
 
     @Operation(summary = "Create a new classroom")
-    @ApiResponse(responseCode = "201", description = "Classroom created successfully")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Classroom created successfully",
+            content = @Content(schema = @Schema(implementation = ClassRoom.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
     @PostMapping
-    public ResponseEntity<ClassRoom> createClassRoom(@Valid @RequestBody ClassRoom classRoom) {
+    public ResponseEntity<ClassRoom> createClassRoom(
+            @Parameter(description = "Classroom to create") @Valid @RequestBody ClassRoom classRoom) {
         return new ResponseEntity<>(classRoomService.save(classRoom), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Get a classroom by its ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Classroom found"),
+        @ApiResponse(responseCode = "404", description = "Classroom not found")
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<ClassRoom> getClassRoomById(@PathVariable Long id) {
+    public ResponseEntity<ClassRoom> getClassRoomById(
+            @Parameter(description = "ID of the classroom") @PathVariable Long id) {
         return ResponseEntity.ok(classRoomService.findById(id));
     }
 
+    @Operation(summary = "Get all classrooms with pagination")
+    @ApiResponse(responseCode = "200", description = "List of classrooms retrieved successfully")
     @GetMapping
-    public ResponseEntity<Page<ClassRoom>> getAllClassRooms(Pageable pageable) {
+    public ResponseEntity<Page<ClassRoom>> getAllClassRooms(
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(classRoomService.findAll(pageable));
     }
 
+    @Operation(summary = "Update a classroom")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Classroom updated successfully"),
+        @ApiResponse(responseCode = "404", description = "Classroom not found"),
+        @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<ClassRoom> updateClassRoom(
-            @PathVariable Long id, 
-            @Valid @RequestBody ClassRoom classRoom) {
+            @Parameter(description = "ID of the classroom to update") @PathVariable Long id,
+            @Parameter(description = "Updated classroom details") @Valid @RequestBody ClassRoom classRoom) {
         classRoom.setId(id);
         return ResponseEntity.ok(classRoomService.update(classRoom));
     }
 
+    @Operation(summary = "Delete a classroom")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Classroom deleted successfully"),
+        @ApiResponse(responseCode = "404", description = "Classroom not found")
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClassRoom(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteClassRoom(
+            @Parameter(description = "ID of the classroom to delete") @PathVariable Long id) {
         classRoomService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Search classrooms by keyword")
+    @ApiResponse(responseCode = "200", description = "Search results retrieved successfully")
     @GetMapping("/search")
     public ResponseEntity<Page<ClassRoom>> searchClassRooms(
-            @RequestParam String keyword, 
-            Pageable pageable) {
+            @Parameter(description = "Search keyword") @RequestParam String keyword,
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(classRoomService.search(keyword, pageable));
     }
 
+    @Operation(summary = "Get available rooms by capacity")
+    @ApiResponse(responseCode = "200", description = "Available rooms retrieved successfully")
     @GetMapping("/available")
     public ResponseEntity<Page<ClassRoom>> getAvailableRooms(
-            @RequestParam int capacity, 
-            Pageable pageable) {
+            @Parameter(description = "Required capacity") @RequestParam int capacity,
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(classRoomService.findAvailableRooms(capacity, pageable));
     }
 
+    @Operation(summary = "Get empty classrooms")
+    @ApiResponse(responseCode = "200", description = "Empty rooms retrieved successfully")
     @GetMapping("/empty")
-    public ResponseEntity<Page<ClassRoom>> getEmptyRooms(Pageable pageable) {
+    public ResponseEntity<Page<ClassRoom>> getEmptyRooms(
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(classRoomService.findEmptyRooms(pageable));
     }
 
+    @Operation(summary = "Get classrooms without trainers")
+    @ApiResponse(responseCode = "200", description = "Classrooms without trainers retrieved successfully")
     @GetMapping("/without-trainers")
-    public ResponseEntity<Page<ClassRoom>> getRoomsWithoutTrainers(Pageable pageable) {
+    public ResponseEntity<Page<ClassRoom>> getRoomsWithoutTrainers(
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(classRoomService.findRoomsWithoutTrainers(pageable));
     }
 }

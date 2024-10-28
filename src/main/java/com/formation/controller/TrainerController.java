@@ -19,7 +19,11 @@ import com.formation.entity.Trainer;
 import com.formation.service.TrainerService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 @RestController
@@ -28,84 +32,124 @@ import jakarta.validation.Valid;
 public class TrainerController {
     @Autowired
     private TrainerService trainerService;
+
     @Operation(summary = "Create a new trainer")
-    @ApiResponse(responseCode = "201", description = "Trainer created successfully")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Trainer created successfully",
+            content = @Content(schema = @Schema(implementation = Trainer.class))),
+        @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
     @PostMapping
-    public ResponseEntity<Trainer> createTrainer(@Valid @RequestBody Trainer trainer)
-{
+    public ResponseEntity<Trainer> createTrainer(
+            @Parameter(description = "Trainer to create") @Valid @RequestBody Trainer trainer) {
         return new ResponseEntity<>(trainerService.save(trainer), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Get a trainer by ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Trainer found"),
+        @ApiResponse(responseCode = "404", description = "Trainer not found")
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<Trainer> getTrainerById(@PathVariable Long id) {
+    public ResponseEntity<Trainer> getTrainerById(
+            @Parameter(description = "ID of the trainer") @PathVariable Long id) {
         return ResponseEntity.ok(trainerService.findById(id));
     }
 
+    @Operation(summary = "Get all trainers with pagination")
+    @ApiResponse(responseCode = "200", description = "List of trainers retrieved successfully")
     @GetMapping
-    public ResponseEntity<Page<Trainer>> getAllTrainers(Pageable pageable) {
+    public ResponseEntity<Page<Trainer>> getAllTrainers(
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(trainerService.findAll(pageable));
     }
 
+    @Operation(summary = "Update a trainer")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Trainer updated successfully"),
+        @ApiResponse(responseCode = "404", description = "Trainer not found"),
+        @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Trainer> updateTrainer(
-            @PathVariable Long id, 
-            @Valid @RequestBody Trainer trainer) {
+            @Parameter(description = "ID of the trainer to update") @PathVariable Long id,
+            @Parameter(description = "Updated trainer details") @Valid @RequestBody Trainer trainer) {
         trainer.setId(id);
         return ResponseEntity.ok(trainerService.update(trainer));
     }
 
+    @Operation(summary = "Delete a trainer")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Trainer deleted successfully"),
+        @ApiResponse(responseCode = "404", description = "Trainer not found")
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTrainer(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTrainer(
+            @Parameter(description = "ID of the trainer to delete") @PathVariable Long id) {
         trainerService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Search trainers by keyword")
+    @ApiResponse(responseCode = "200", description = "Search results retrieved successfully")
     @GetMapping("/search")
     public ResponseEntity<Page<Trainer>> searchTrainers(
-            @RequestParam String keyword, 
-            Pageable pageable) {
+            @Parameter(description = "Search keyword") @RequestParam String keyword,
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(trainerService.search(keyword, pageable));
     }
 
+    @Operation(summary = "Get trainers by email")
+    @ApiResponse(responseCode = "200", description = "Trainers retrieved successfully")
     @GetMapping("/email/{email}")
     public ResponseEntity<Page<Trainer>> getTrainersByEmail(
-            @PathVariable String email,
-            Pageable pageable) {
+            @Parameter(description = "Trainer's email") @PathVariable String email,
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(trainerService.findByEmail(email, pageable));
     }
 
+    @Operation(summary = "Get trainers by specialty")
+    @ApiResponse(responseCode = "200", description = "Trainers retrieved successfully")
     @GetMapping("/specialty/{specialty}")
     public ResponseEntity<Page<Trainer>> getTrainersBySpecialty(
-            @PathVariable String specialty,
-            Pageable pageable) {
+            @Parameter(description = "Trainer's specialty") @PathVariable String specialty,
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(trainerService.findBySpecialty(specialty, pageable));
     }
 
+    @Operation(summary = "Get trainers by name")
+    @ApiResponse(responseCode = "200", description = "Trainers retrieved successfully")
     @GetMapping("/name")
     public ResponseEntity<Page<Trainer>> getTrainersByName(
-            @RequestParam String lastName,
-            @RequestParam String firstName,
-            Pageable pageable) {
+            @Parameter(description = "Trainer's last name") @RequestParam String lastName,
+            @Parameter(description = "Trainer's first name") @RequestParam String firstName,
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(trainerService.findByLastNameAndFirstName(lastName, firstName, pageable));
     }
 
+    @Operation(summary = "Get trainers by classroom")
+    @ApiResponse(responseCode = "200", description = "Trainers retrieved successfully")
     @GetMapping("/classroom/{classRoomId}")
     public ResponseEntity<Page<Trainer>> getTrainersByClassRoom(
-            @PathVariable Long classRoomId, 
-            Pageable pageable) {
+            @Parameter(description = "Classroom ID") @PathVariable Long classRoomId,
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(trainerService.findByClassRoomId(classRoomId, pageable));
     }
 
+    @Operation(summary = "Get available trainers")
+    @ApiResponse(responseCode = "200", description = "Available trainers retrieved successfully")
     @GetMapping("/available")
     public ResponseEntity<Page<Trainer>> getAvailableTrainers(
-            @RequestParam int maxCourses, 
-            Pageable pageable) {
+            @Parameter(description = "Maximum number of courses") @RequestParam int maxCourses,
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(trainerService.findAvailableTrainers(maxCourses, pageable));
     }
 
+    @Operation(summary = "Get trainers without courses")
+    @ApiResponse(responseCode = "200", description = "Trainers without courses retrieved successfully")
     @GetMapping("/without-courses")
     public ResponseEntity<Page<Trainer>> getTrainersWithoutCourses(
-            Pageable pageable) {
+            @Parameter(description = "Pagination parameters") Pageable pageable) {
         return ResponseEntity.ok(trainerService.findTrainersWithoutCourses(pageable));
     }
 }

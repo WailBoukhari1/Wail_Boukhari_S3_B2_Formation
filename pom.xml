@@ -95,10 +95,19 @@
             <scope>test</scope>
         </dependency>
         
+        <!-- Remove any existing springdoc/swagger dependencies and add these -->
+        <!-- SpringDoc OpenAPI UI -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.3.0</version>
+            <version>2.1.0</version>
+        </dependency>
+        
+        <!-- OpenAPI Core -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-core</artifactId>
+            <version>2.2.15</version>
         </dependency>
     </dependencies>
 
