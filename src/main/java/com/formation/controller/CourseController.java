@@ -33,52 +33,52 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/courses")
 @CrossOrigin(origins = "*")  
-@Tag(name = "Course Management", description = "APIs for managing courses")
+@Tag(name = "Course Management", description = "APIs for managing training courses")
 public class CourseController {
 
     @Autowired
     private CourseService courseService;
 
-    @Operation(summary = "Create a new course")
+    @Operation(summary = "Create a new training course")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Course created successfully",
             content = @Content(schema = @Schema(implementation = Course.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid input")
+        @ApiResponse(responseCode = "400", description = "Invalid course data")
     })
     @PostMapping
     public ResponseEntity<Course> createCourse(
-            @Parameter(description = "Course to create") @Valid @RequestBody Course course) {
+            @Parameter(description = "Course details including title, level, prerequisites, capacity") 
+            @Valid @RequestBody Course course) {
         return new ResponseEntity<>(courseService.save(course), HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Get a course by its ID")
+    @Operation(summary = "Get course details by ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Course found"),
+        @ApiResponse(responseCode = "200", description = "Course details retrieved"),
         @ApiResponse(responseCode = "404", description = "Course not found")
     })
     @GetMapping("/{id}")
     public ResponseEntity<Course> getCourseById(
-            @Parameter(description = "ID of the course") @PathVariable Long id) {
+            @Parameter(description = "Course ID") @PathVariable Long id) {
         return ResponseEntity.ok(courseService.findById(id));
     }
 
     @Operation(summary = "Get all courses with pagination")
-    @ApiResponse(responseCode = "200", description = "List of courses retrieved successfully")
+    @ApiResponse(responseCode = "200", description = "List of courses retrieved")
     @GetMapping
-    public ResponseEntity<Page<Course>> getAllCourses(
-            @Parameter(description = "Pagination parameters") Pageable pageable) {
+    public ResponseEntity<Page<Course>> getAllCourses(Pageable pageable) {
         return ResponseEntity.ok(courseService.findAll(pageable));
     }
 
-    @Operation(summary = "Update a course")
+    @Operation(summary = "Update course details")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Course updated successfully"),
+        @ApiResponse(responseCode = "200", description = "Course updated"),
         @ApiResponse(responseCode = "404", description = "Course not found"),
-        @ApiResponse(responseCode = "400", description = "Invalid input")
+        @ApiResponse(responseCode = "400", description = "Invalid course data")
     })
     @PutMapping("/{id}")
     public ResponseEntity<Course> updateCourse(
-            @Parameter(description = "ID of the course to update") @PathVariable Long id,
+            @Parameter(description = "Course ID") @PathVariable Long id,
             @Parameter(description = "Updated course details") @Valid @RequestBody Course course) {
         course.setId(id);
         return ResponseEntity.ok(courseService.update(course));
@@ -86,40 +86,31 @@ public class CourseController {
 
     @Operation(summary = "Delete a course")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Course deleted successfully"),
+        @ApiResponse(responseCode = "204", description = "Course deleted"),
         @ApiResponse(responseCode = "404", description = "Course not found")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCourse(
-            @Parameter(description = "ID of the course to delete") @PathVariable Long id) {
+            @Parameter(description = "Course ID") @PathVariable Long id) {
         courseService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Search courses by keyword")
-    @ApiResponse(responseCode = "200", description = "Search results retrieved successfully")
-    @GetMapping("/search")
-    public ResponseEntity<Page<Course>> searchCourses(
-            @Parameter(description = "Search keyword") @RequestParam String keyword,
-            @Parameter(description = "Pagination parameters") Pageable pageable) {
-        return ResponseEntity.ok(courseService.search(keyword, pageable));
-    }
+    // @Operation(summary = "Search courses by status")
+    // @GetMapping("/status/{status}")
+    // public ResponseEntity<Page<Course>> getCoursesByStatus(
+    //         @Parameter(description = "Course status (PLANIFIEE, EN_COURS, TERMINEE, ANNULEE)") 
+    //         @PathVariable String status,
+    //         Pageable pageable) {
+    //     return ResponseEntity.ok(courseService.findByStatus(status, pageable));
+    // }
 
     @Operation(summary = "Get courses by date range")
-    @ApiResponse(responseCode = "200", description = "Courses retrieved successfully")
     @GetMapping("/date-range")
     public ResponseEntity<Page<Course>> getCoursesByDateRange(
             @Parameter(description = "Start date (YYYY-MM-DD)") @RequestParam LocalDate startDate,
             @Parameter(description = "End date (YYYY-MM-DD)") @RequestParam LocalDate endDate,
-            @Parameter(description = "Pagination parameters") Pageable pageable) {
+            Pageable pageable) {
         return ResponseEntity.ok(courseService.findByDateRange(startDate, endDate, pageable));
-    }
-
-    @Operation(summary = "Get available courses")
-    @ApiResponse(responseCode = "200", description = "Available courses retrieved successfully")
-    @GetMapping("/available")
-    public ResponseEntity<Page<Course>> getAvailableCourses(
-            @Parameter(description = "Pagination parameters") Pageable pageable) {
-        return ResponseEntity.ok(courseService.findAvailableCourses(pageable));
     }
 }
