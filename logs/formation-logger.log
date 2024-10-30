@@ -1431,3 +1431,491 @@ Caused by: java.lang.ClassNotFoundException: com.formation.FormationApplication$
 2024-10-30 10:45:56,478 WARN o.h.e.j.d.i.DialectFactoryImpl [restartedMain] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
 2024-10-30 10:45:56,548 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [restartedMain] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
 2024-10-30 10:45:56,554 INFO o.s.o.j.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:45:56,762 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30 10:45:56,899 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2024-10-30 10:45:56,910 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:45:56,913 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port 8080 (http) with context path '/'
+2024-10-30 10:45:56,916 INFO o.s.b.StartupInfoLogger [restartedMain] Started FormationApplication in 0.774 seconds (process running for 3980.03)
+2024-10-30 10:45:56,917 INFO o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2024-10-30 10:51:45,176 INFO o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [File Watcher] Restarting due to 2 class path changes (0 additions, 0 deletions, 2 modifications)
+2024-10-30 10:51:45,178 INFO o.a.j.l.DirectJDKLog [Thread-95] Stopping ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:51:45,182 INFO o.s.o.j.AbstractEntityManagerFactoryBean [Thread-95] Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:51:45,183 WARN o.s.b.f.s.DisposableBeanAdapter [Thread-95] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-10-30 10:51:45,183 INFO c.z.h.HikariDataSource [Thread-95] HikariPool-26 - Shutdown initiated...
+2024-10-30 10:51:45,184 INFO c.z.h.HikariDataSource [Thread-95] HikariPool-26 - Shutdown completed.
+2024-10-30 10:51:45,272 INFO o.s.b.StartupInfoLogger [restartedMain] Starting FormationApplication using Java 22.0.2 with PID 1432 (C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation\target\classes started by ssngn in C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation)
+2024-10-30 10:51:45,272 DEBUG o.s.b.StartupInfoLogger [restartedMain] Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-10-30 10:51:45,272 INFO o.s.b.SpringApplication [restartedMain] The following 1 profile is active: "dev"
+2024-10-30 10:51:45,531 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30 10:51:45,549 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 18 ms. Found 4 JPA repository interfaces.
+2024-10-30 10:51:45,647 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port 8080 (http)
+2024-10-30 10:51:45,649 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:51:45,649 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2024-10-30 10:51:45,650 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-30 10:51:45,666 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2024-10-30 10:51:45,666 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 392 ms
+2024-10-30 10:51:45,684 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-27 - Starting...
+2024-10-30 10:51:45,686 INFO c.z.h.p.HikariPool [restartedMain] HikariPool-27 - Added connection conn198: url=jdbc:h2:mem:formationdb user=SA
+2024-10-30 10:51:45,687 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-27 - Start completed.
+2024-10-30 10:51:45,687 INFO o.s.b.a.h.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:formationdb'
+2024-10-30 10:51:45,714 INFO o.h.j.i.u.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30 10:51:45,716 INFO o.h.c.i.RegionFactoryInitiator [restartedMain] HHH000026: Second-level cache disabled
+2024-10-30 10:51:45,722 INFO o.s.o.j.p.SpringPersistenceUnitInfo [restartedMain] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30 10:51:45,724 WARN o.h.e.j.d.i.DialectFactoryImpl [restartedMain] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-10-30 10:51:45,835 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [restartedMain] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30 10:51:45,843 INFO o.s.o.j.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:51:46,002 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30 10:51:46,114 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2024-10-30 10:51:46,133 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:51:46,135 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port 8080 (http) with context path '/'
+2024-10-30 10:51:46,138 INFO o.s.b.StartupInfoLogger [restartedMain] Started FormationApplication in 0.889 seconds (process running for 4329.253)
+2024-10-30 10:51:46,139 INFO o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2024-10-30 10:52:13,978 INFO o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [File Watcher] Restarting due to 2 class path changes (0 additions, 0 deletions, 2 modifications)
+2024-10-30 10:52:13,980 INFO o.a.j.l.DirectJDKLog [Thread-99] Stopping ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:13,986 INFO o.s.o.j.AbstractEntityManagerFactoryBean [Thread-99] Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:52:13,987 WARN o.s.b.f.s.DisposableBeanAdapter [Thread-99] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-10-30 10:52:13,987 INFO c.z.h.HikariDataSource [Thread-99] HikariPool-27 - Shutdown initiated...
+2024-10-30 10:52:13,988 INFO c.z.h.HikariDataSource [Thread-99] HikariPool-27 - Shutdown completed.
+2024-10-30 10:52:14,077 INFO o.s.b.StartupInfoLogger [restartedMain] Starting FormationApplication using Java 22.0.2 with PID 1432 (C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation\target\classes started by ssngn in C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation)
+2024-10-30 10:52:14,077 DEBUG o.s.b.StartupInfoLogger [restartedMain] Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-10-30 10:52:14,077 INFO o.s.b.SpringApplication [restartedMain] The following 1 profile is active: "dev"
+2024-10-30 10:52:14,215 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30 10:52:14,227 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 11 ms. Found 4 JPA repository interfaces.
+2024-10-30 10:52:14,282 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port 8080 (http)
+2024-10-30 10:52:14,282 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:14,283 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2024-10-30 10:52:14,283 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-30 10:52:14,294 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2024-10-30 10:52:14,295 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 217 ms
+2024-10-30 10:52:14,302 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-28 - Starting...
+2024-10-30 10:52:14,304 INFO c.z.h.p.HikariPool [restartedMain] HikariPool-28 - Added connection conn208: url=jdbc:h2:mem:formationdb user=SA
+2024-10-30 10:52:14,304 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-28 - Start completed.
+2024-10-30 10:52:14,304 INFO o.s.b.a.h.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:formationdb'
+2024-10-30 10:52:14,318 INFO o.h.j.i.u.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30 10:52:14,319 INFO o.h.c.i.RegionFactoryInitiator [restartedMain] HHH000026: Second-level cache disabled
+2024-10-30 10:52:14,323 INFO o.s.o.j.p.SpringPersistenceUnitInfo [restartedMain] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30 10:52:14,324 WARN o.h.e.j.d.i.DialectFactoryImpl [restartedMain] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-10-30 10:52:14,397 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [restartedMain] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30 10:52:14,405 INFO o.s.o.j.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:52:14,512 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30 10:52:14,599 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2024-10-30 10:52:14,609 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:14,612 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port 8080 (http) with context path '/'
+2024-10-30 10:52:14,614 INFO o.s.b.StartupInfoLogger [restartedMain] Started FormationApplication in 0.556 seconds (process running for 4357.728)
+2024-10-30 10:52:14,616 INFO o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2024-10-30 10:52:14,617 INFO c.f.FormationApplication [restartedMain] 
+--------------------------------------------
+Application URLs:
+--------------------------------------------
+Active Profile: dev
+Swagger UI: http://localhost:8080/swagger-ui.html
+OpenAPI Docs: http://localhost:8080/api-docs
+H2 Console: http://localhost:8080/h2-console
+SonarQube: http://localhost:9000
+--------------------------------------------
+
+2024-10-30 10:52:22,178 INFO o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [File Watcher] Restarting due to 2 class path changes (0 additions, 0 deletions, 2 modifications)
+2024-10-30 10:52:22,179 INFO o.a.j.l.DirectJDKLog [Thread-103] Stopping ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:22,184 INFO o.s.o.j.AbstractEntityManagerFactoryBean [Thread-103] Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:52:22,184 WARN o.s.b.f.s.DisposableBeanAdapter [Thread-103] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-10-30 10:52:22,184 INFO c.z.h.HikariDataSource [Thread-103] HikariPool-28 - Shutdown initiated...
+2024-10-30 10:52:22,185 INFO c.z.h.HikariDataSource [Thread-103] HikariPool-28 - Shutdown completed.
+2024-10-30 10:52:22,266 INFO o.s.b.StartupInfoLogger [restartedMain] Starting FormationApplication using Java 22.0.2 with PID 1432 (C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation\target\classes started by ssngn in C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation)
+2024-10-30 10:52:22,267 DEBUG o.s.b.StartupInfoLogger [restartedMain] Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-10-30 10:52:22,267 INFO o.s.b.SpringApplication [restartedMain] The following 1 profile is active: "dev"
+2024-10-30 10:52:22,400 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30 10:52:22,412 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 11 ms. Found 4 JPA repository interfaces.
+2024-10-30 10:52:22,471 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port 8080 (http)
+2024-10-30 10:52:22,471 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:22,472 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2024-10-30 10:52:22,472 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-30 10:52:22,484 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2024-10-30 10:52:22,484 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 216 ms
+2024-10-30 10:52:22,491 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-29 - Starting...
+2024-10-30 10:52:22,493 INFO c.z.h.p.HikariPool [restartedMain] HikariPool-29 - Added connection conn218: url=jdbc:h2:mem:formationdb user=SA
+2024-10-30 10:52:22,494 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-29 - Start completed.
+2024-10-30 10:52:22,494 INFO o.s.b.a.h.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:formationdb'
+2024-10-30 10:52:22,510 INFO o.h.j.i.u.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30 10:52:22,512 INFO o.h.c.i.RegionFactoryInitiator [restartedMain] HHH000026: Second-level cache disabled
+2024-10-30 10:52:22,516 INFO o.s.o.j.p.SpringPersistenceUnitInfo [restartedMain] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30 10:52:22,516 WARN o.h.e.j.d.i.DialectFactoryImpl [restartedMain] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-10-30 10:52:22,587 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [restartedMain] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30 10:52:22,594 INFO o.s.o.j.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:52:22,725 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30 10:52:22,828 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2024-10-30 10:52:22,837 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:22,840 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port 8080 (http) with context path '/'
+2024-10-30 10:52:22,843 INFO o.s.b.StartupInfoLogger [restartedMain] Started FormationApplication in 0.596 seconds (process running for 4365.957)
+2024-10-30 10:52:22,844 INFO o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2024-10-30 10:52:22,845 INFO c.f.FormationApplication [restartedMain] 
+--------------------------------------------
+Application URLs:
+--------------------------------------------
+Active Profile: dev
+Swagger UI: http://localhost:8080/swagger-ui.html
+OpenAPI Docs: http://localhost:8080/api-docs
+H2 Console: http://localhost:8080/h2-console
+SonarQube: http://localhost:9000
+--------------------------------------------
+
+2024-10-30 10:52:24,264 INFO o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [File Watcher] Restarting due to 2 class path changes (0 additions, 0 deletions, 2 modifications)
+2024-10-30 10:52:24,266 INFO o.a.j.l.DirectJDKLog [Thread-107] Stopping ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:24,276 INFO o.s.o.j.AbstractEntityManagerFactoryBean [Thread-107] Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:52:24,277 WARN o.s.b.f.s.DisposableBeanAdapter [Thread-107] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-10-30 10:52:24,277 INFO c.z.h.HikariDataSource [Thread-107] HikariPool-29 - Shutdown initiated...
+2024-10-30 10:52:24,278 INFO c.z.h.HikariDataSource [Thread-107] HikariPool-29 - Shutdown completed.
+2024-10-30 10:52:24,360 INFO o.s.b.StartupInfoLogger [restartedMain] Starting FormationApplication using Java 22.0.2 with PID 1432 (C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation\target\classes started by ssngn in C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation)
+2024-10-30 10:52:24,360 DEBUG o.s.b.StartupInfoLogger [restartedMain] Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-10-30 10:52:24,360 INFO o.s.b.SpringApplication [restartedMain] The following 1 profile is active: "dev"
+2024-10-30 10:52:24,593 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30 10:52:24,609 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 15 ms. Found 4 JPA repository interfaces.
+2024-10-30 10:52:24,688 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port 8080 (http)
+2024-10-30 10:52:24,689 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:24,689 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2024-10-30 10:52:24,689 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-30 10:52:24,707 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2024-10-30 10:52:24,707 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 345 ms
+2024-10-30 10:52:24,719 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-30 - Starting...
+2024-10-30 10:52:24,720 INFO c.z.h.p.HikariPool [restartedMain] HikariPool-30 - Added connection conn228: url=jdbc:h2:mem:formationdb user=SA
+2024-10-30 10:52:24,721 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-30 - Start completed.
+2024-10-30 10:52:24,721 INFO o.s.b.a.h.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:formationdb'
+2024-10-30 10:52:24,737 INFO o.h.j.i.u.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30 10:52:24,739 INFO o.h.c.i.RegionFactoryInitiator [restartedMain] HHH000026: Second-level cache disabled
+2024-10-30 10:52:24,743 INFO o.s.o.j.p.SpringPersistenceUnitInfo [restartedMain] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30 10:52:24,744 WARN o.h.e.j.d.i.DialectFactoryImpl [restartedMain] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-10-30 10:52:24,837 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [restartedMain] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30 10:52:24,850 INFO o.s.o.j.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:52:24,977 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30 10:52:25,057 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2024-10-30 10:52:25,064 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:25,067 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port 8080 (http) with context path '/'
+2024-10-30 10:52:25,069 INFO o.s.b.StartupInfoLogger [restartedMain] Started FormationApplication in 0.737 seconds (process running for 4368.184)
+2024-10-30 10:52:25,070 INFO o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2024-10-30 10:52:25,071 INFO c.f.FormationApplication [restartedMain] 
+--------------------------------------------
+Application URLs:
+--------------------------------------------
+Active Profile: dev
+Swagger UI: http://localhost:8080/swagger-ui.html
+OpenAPI Docs: http://localhost:8080/api-docs
+H2 Console: http://localhost:8080/h2-console
+SonarQube: http://localhost:9000
+--------------------------------------------
+
+2024-10-30 10:52:33,657 INFO o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [File Watcher] Restarting due to 2 class path changes (0 additions, 0 deletions, 2 modifications)
+2024-10-30 10:52:33,658 INFO o.a.j.l.DirectJDKLog [Thread-111] Stopping ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:33,663 INFO o.s.o.j.AbstractEntityManagerFactoryBean [Thread-111] Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:52:33,663 WARN o.s.b.f.s.DisposableBeanAdapter [Thread-111] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-10-30 10:52:33,663 INFO c.z.h.HikariDataSource [Thread-111] HikariPool-30 - Shutdown initiated...
+2024-10-30 10:52:33,664 INFO c.z.h.HikariDataSource [Thread-111] HikariPool-30 - Shutdown completed.
+2024-10-30 10:52:33,821 INFO o.s.b.StartupInfoLogger [restartedMain] Starting FormationApplication using Java 22.0.2 with PID 1432 (C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation\target\classes started by ssngn in C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation)
+2024-10-30 10:52:33,822 DEBUG o.s.b.StartupInfoLogger [restartedMain] Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-10-30 10:52:33,822 INFO o.s.b.SpringApplication [restartedMain] The following 1 profile is active: "dev"
+2024-10-30 10:52:34,271 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30 10:52:34,298 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 26 ms. Found 4 JPA repository interfaces.
+2024-10-30 10:52:34,479 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port 8080 (http)
+2024-10-30 10:52:34,480 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:34,480 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2024-10-30 10:52:34,480 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-30 10:52:34,504 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2024-10-30 10:52:34,504 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 677 ms
+2024-10-30 10:52:34,524 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-31 - Starting...
+2024-10-30 10:52:34,527 INFO c.z.h.p.HikariPool [restartedMain] HikariPool-31 - Added connection conn238: url=jdbc:h2:mem:formationdb user=SA
+2024-10-30 10:52:34,527 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-31 - Start completed.
+2024-10-30 10:52:34,528 INFO o.s.b.a.h.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:formationdb'
+2024-10-30 10:52:34,559 INFO o.h.j.i.u.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30 10:52:34,563 INFO o.h.c.i.RegionFactoryInitiator [restartedMain] HHH000026: Second-level cache disabled
+2024-10-30 10:52:34,570 INFO o.s.o.j.p.SpringPersistenceUnitInfo [restartedMain] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30 10:52:34,572 WARN o.h.e.j.d.i.DialectFactoryImpl [restartedMain] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-10-30 10:52:34,684 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [restartedMain] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30 10:52:34,692 INFO o.s.o.j.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:52:34,913 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30 10:52:35,031 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2024-10-30 10:52:35,048 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:35,051 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port 8080 (http) with context path '/'
+2024-10-30 10:52:35,055 INFO o.s.b.StartupInfoLogger [restartedMain] Started FormationApplication in 1.323 seconds (process running for 4378.17)
+2024-10-30 10:52:35,057 INFO o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2024-10-30 10:52:35,057 INFO c.f.FormationApplication [restartedMain] 
+--------------------------------------------
+Application URLs:
+--------------------------------------------
+Active Profile: dev
+Swagger UI: http://localhost:8080/swagger-ui.html
+OpenAPI Docs: http://localhost:8080/api-docs
+H2 Console: http://localhost:8080/h2-console
+SonarQube: http://localhost:9000
+--------------------------------------------
+
+2024-10-30 10:52:38,976 INFO o.s.o.j.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:52:38,976 WARN o.s.b.f.s.DisposableBeanAdapter [SpringApplicationShutdownHook] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-10-30 10:52:38,976 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-31 - Shutdown initiated...
+2024-10-30 10:52:38,977 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-31 - Shutdown completed.
+2024-10-30 10:52:45,285 INFO o.h.v.i.u.Version [background-preinit] HV000001: Hibernate Validator 8.0.1.Final
+2024-10-30 10:52:45,314 INFO o.s.b.StartupInfoLogger [restartedMain] Starting FormationApplication using Java 22.0.2 with PID 21336 (C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation\target\classes started by ssngn in C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation)
+2024-10-30 10:52:45,314 DEBUG o.s.b.StartupInfoLogger [restartedMain] Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-10-30 10:52:45,315 INFO o.s.b.SpringApplication [restartedMain] The following 1 profile is active: "dev"
+2024-10-30 10:52:45,353 INFO o.s.b.l.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-30 10:52:45,353 INFO o.s.b.l.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-30 10:52:46,065 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30 10:52:46,119 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 45 ms. Found 4 JPA repository interfaces.
+2024-10-30 10:52:46,577 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port 8080 (http)
+2024-10-30 10:52:46,585 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:46,588 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2024-10-30 10:52:46,588 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-30 10:52:46,627 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2024-10-30 10:52:46,628 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1274 ms
+2024-10-30 10:52:46,651 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2024-10-30 10:52:46,804 INFO c.z.h.p.HikariPool [restartedMain] HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:formationdb user=SA
+2024-10-30 10:52:46,807 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2024-10-30 10:52:46,818 INFO o.s.b.a.h.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:formationdb'
+2024-10-30 10:52:46,937 INFO o.h.j.i.u.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30 10:52:46,974 INFO o.h.Version [restartedMain] HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30 10:52:47,000 INFO o.h.c.i.RegionFactoryInitiator [restartedMain] HHH000026: Second-level cache disabled
+2024-10-30 10:52:47,228 INFO o.s.o.j.p.SpringPersistenceUnitInfo [restartedMain] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30 10:52:47,266 WARN o.h.e.j.d.i.DialectFactoryImpl [restartedMain] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-10-30 10:52:48,064 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [restartedMain] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30 10:52:48,128 INFO o.s.o.j.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:52:48,340 INFO o.s.d.j.r.q.QueryEnhancerFactory [restartedMain] Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-10-30 10:52:49,004 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30 10:52:49,360 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2024-10-30 10:52:49,381 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:52:49,397 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port 8080 (http) with context path '/'
+2024-10-30 10:52:49,405 INFO o.s.b.StartupInfoLogger [restartedMain] Started FormationApplication in 4.512 seconds (process running for 5.249)
+2024-10-30 10:52:49,408 INFO c.f.FormationApplication [restartedMain] 
+--------------------------------------------
+Application URLs:
+--------------------------------------------
+Active Profile: dev
+Swagger UI: http://localhost:8080/swagger-ui.html
+OpenAPI Docs: http://localhost:8080/api-docs
+H2 Console: http://localhost:8080/h2-console
+SonarQube: http://localhost:9000
+--------------------------------------------
+
+2024-10-30 10:52:56,820 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30 10:52:56,821 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2024-10-30 10:52:56,822 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+2024-10-30 10:52:59,518 INFO o.s.a.AbstractOpenApiResource [http-nio-8080-exec-9] Init duration for springdoc-openapi is: 1348 ms
+2024-10-30 10:53:05,694 ERROR c.f.e.GlobalExceptionHandler [http-nio-8080-exec-1] Unexpected error: No static resource favicon.ico.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-10-30 10:53:05,703 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-1] Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
+2024-10-30 10:53:17,647 INFO o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [File Watcher] Restarting due to 2 class path changes (0 additions, 0 deletions, 2 modifications)
+2024-10-30 10:53:17,651 INFO o.a.j.l.DirectJDKLog [Thread-5] Stopping ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:53:17,658 INFO o.s.o.j.AbstractEntityManagerFactoryBean [Thread-5] Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:53:17,664 WARN o.s.b.f.s.DisposableBeanAdapter [Thread-5] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-10-30 10:53:17,665 INFO c.z.h.HikariDataSource [Thread-5] HikariPool-1 - Shutdown initiated...
+2024-10-30 10:53:17,667 INFO c.z.h.HikariDataSource [Thread-5] HikariPool-1 - Shutdown completed.
+2024-10-30 10:53:17,777 INFO o.s.b.StartupInfoLogger [restartedMain] Starting FormationApplication using Java 22.0.2 with PID 21336 (C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation\target\classes started by ssngn in C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation)
+2024-10-30 10:53:17,778 DEBUG o.s.b.StartupInfoLogger [restartedMain] Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-10-30 10:53:17,778 INFO o.s.b.SpringApplication [restartedMain] The following 1 profile is active: "dev"
+2024-10-30 10:53:18,131 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30 10:53:18,150 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 19 ms. Found 4 JPA repository interfaces.
+2024-10-30 10:53:18,248 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port 8080 (http)
+2024-10-30 10:53:18,249 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:53:18,249 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2024-10-30 10:53:18,250 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-30 10:53:18,268 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2024-10-30 10:53:18,268 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 480 ms
+2024-10-30 10:53:18,289 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-2 - Starting...
+2024-10-30 10:53:18,294 INFO c.z.h.p.HikariPool [restartedMain] HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:formationdb user=SA
+2024-10-30 10:53:18,295 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-2 - Start completed.
+2024-10-30 10:53:18,296 INFO o.s.b.a.h.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:formationdb'
+2024-10-30 10:53:18,327 INFO o.h.j.i.u.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30 10:53:18,330 INFO o.h.c.i.RegionFactoryInitiator [restartedMain] HHH000026: Second-level cache disabled
+2024-10-30 10:53:18,352 INFO o.s.o.j.p.SpringPersistenceUnitInfo [restartedMain] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30 10:53:18,356 WARN o.h.e.j.d.i.DialectFactoryImpl [restartedMain] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-10-30 10:53:18,587 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [restartedMain] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30 10:53:18,605 INFO o.s.o.j.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:53:18,887 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30 10:53:19,074 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2024-10-30 10:53:19,086 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:53:19,089 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port 8080 (http) with context path '/'
+2024-10-30 10:53:19,092 INFO o.s.b.StartupInfoLogger [restartedMain] Started FormationApplication in 1.357 seconds (process running for 34.936)
+2024-10-30 10:53:19,095 INFO o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2024-10-30 10:53:19,095 INFO c.f.FormationApplication [restartedMain] 
+--------------------------------------------
+Application URLs:
+--------------------------------------------
+Active Profile: dev
+Swagger UI: http://localhost:8080/swagger-ui.html
+H2 Console: http://localhost:8080/h2-console
+SonarQube: http://localhost:9000
+--------------------------------------------
+
+2024-10-30 10:53:53,028 INFO o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [File Watcher] Restarting due to 2 class path changes (0 additions, 2 deletions, 0 modifications)
+2024-10-30 10:53:53,030 INFO o.a.j.l.DirectJDKLog [Thread-7] Stopping ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:53:53,035 INFO o.s.o.j.AbstractEntityManagerFactoryBean [Thread-7] Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:53:53,036 WARN o.s.b.f.s.DisposableBeanAdapter [Thread-7] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-10-30 10:53:53,037 INFO c.z.h.HikariDataSource [Thread-7] HikariPool-2 - Shutdown initiated...
+2024-10-30 10:53:53,038 INFO c.z.h.HikariDataSource [Thread-7] HikariPool-2 - Shutdown completed.
+2024-10-30 10:53:53,149 INFO o.s.b.StartupInfoLogger [restartedMain] Starting FormationApplication using Java 22.0.2 with PID 21336 (C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation\target\classes started by ssngn in C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation)
+2024-10-30 10:53:53,149 DEBUG o.s.b.StartupInfoLogger [restartedMain] Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-10-30 10:53:53,149 INFO o.s.b.SpringApplication [restartedMain] The following 1 profile is active: "dev"
+2024-10-30 10:53:53,589 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30 10:53:53,606 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 16 ms. Found 4 JPA repository interfaces.
+2024-10-30 10:53:53,692 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port 8080 (http)
+2024-10-30 10:53:53,693 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:53:53,693 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2024-10-30 10:53:53,693 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-30 10:53:53,710 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2024-10-30 10:53:53,710 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 559 ms
+2024-10-30 10:53:53,724 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-3 - Starting...
+2024-10-30 10:53:53,727 INFO c.z.h.p.HikariPool [restartedMain] HikariPool-3 - Added connection conn20: url=jdbc:h2:mem:formationdb user=SA
+2024-10-30 10:53:53,728 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-3 - Start completed.
+2024-10-30 10:53:53,728 INFO o.s.b.a.h.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:formationdb'
+2024-10-30 10:53:53,754 INFO o.h.j.i.u.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30 10:53:53,757 INFO o.h.c.i.RegionFactoryInitiator [restartedMain] HHH000026: Second-level cache disabled
+2024-10-30 10:53:53,768 INFO o.s.o.j.p.SpringPersistenceUnitInfo [restartedMain] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30 10:53:53,770 WARN o.h.e.j.d.i.DialectFactoryImpl [restartedMain] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-10-30 10:53:53,930 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [restartedMain] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30 10:53:53,951 INFO o.s.o.j.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:53:54,315 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30 10:53:54,492 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2024-10-30 10:53:54,502 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:53:54,505 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port 8080 (http) with context path '/'
+2024-10-30 10:53:54,509 INFO o.s.b.StartupInfoLogger [restartedMain] Started FormationApplication in 1.402 seconds (process running for 70.353)
+2024-10-30 10:53:54,510 INFO o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2024-10-30 10:53:54,511 INFO c.f.FormationApplication [restartedMain] 
+--------------------------------------------
+Application URLs:
+--------------------------------------------
+Active Profile: dev
+Swagger UI: http://localhost:8080/swagger-ui.html
+OpenAPI Docs: http://localhost:8080/api-docs
+H2 Console: http://localhost:8080/h2-console
+SonarQube: http://localhost:9000
+--------------------------------------------
+
+2024-10-30 10:53:55,937 INFO o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener [File Watcher] Restarting due to 2 class path changes (2 additions, 0 deletions, 0 modifications)
+2024-10-30 10:53:55,938 INFO o.a.j.l.DirectJDKLog [Thread-12] Stopping ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:53:55,943 INFO o.s.o.j.AbstractEntityManagerFactoryBean [Thread-12] Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:53:55,944 WARN o.s.b.f.s.DisposableBeanAdapter [Thread-12] Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2024-10-30 10:53:55,945 INFO c.z.h.HikariDataSource [Thread-12] HikariPool-3 - Shutdown initiated...
+2024-10-30 10:53:55,945 INFO c.z.h.HikariDataSource [Thread-12] HikariPool-3 - Shutdown completed.
+2024-10-30 10:53:56,044 INFO o.s.b.StartupInfoLogger [restartedMain] Starting FormationApplication using Java 22.0.2 with PID 21336 (C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation\target\classes started by ssngn in C:\Users\ssngn\Documents\Youcode\Wail_Boukhari_S3_B2_Formation)
+2024-10-30 10:53:56,044 DEBUG o.s.b.StartupInfoLogger [restartedMain] Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-10-30 10:53:56,044 INFO o.s.b.SpringApplication [restartedMain] The following 1 profile is active: "dev"
+2024-10-30 10:53:56,248 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30 10:53:56,265 INFO o.s.d.r.c.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 16 ms. Found 4 JPA repository interfaces.
+2024-10-30 10:53:56,331 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat initialized with port 8080 (http)
+2024-10-30 10:53:56,331 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:53:56,331 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2024-10-30 10:53:56,331 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-30 10:53:56,343 INFO o.a.j.l.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2024-10-30 10:53:56,344 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 298 ms
+2024-10-30 10:53:56,353 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-4 - Starting...
+2024-10-30 10:53:56,355 INFO c.z.h.p.HikariPool [restartedMain] HikariPool-4 - Added connection conn30: url=jdbc:h2:mem:formationdb user=SA
+2024-10-30 10:53:56,355 INFO c.z.h.HikariDataSource [restartedMain] HikariPool-4 - Start completed.
+2024-10-30 10:53:56,355 INFO o.s.b.a.h.H2ConsoleAutoConfiguration [restartedMain] H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:formationdb'
+2024-10-30 10:53:56,372 INFO o.h.j.i.u.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30 10:53:56,374 INFO o.h.c.i.RegionFactoryInitiator [restartedMain] HHH000026: Second-level cache disabled
+2024-10-30 10:53:56,379 INFO o.s.o.j.p.SpringPersistenceUnitInfo [restartedMain] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30 10:53:56,380 WARN o.h.e.j.d.i.DialectFactoryImpl [restartedMain] HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-10-30 10:53:56,464 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [restartedMain] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30 10:53:56,480 INFO o.s.o.j.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30 10:53:56,682 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30 10:53:56,813 INFO o.s.b.d.a.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2024-10-30 10:53:56,820 INFO o.a.j.l.DirectJDKLog [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+2024-10-30 10:53:56,823 INFO o.s.b.w.e.t.TomcatWebServer [restartedMain] Tomcat started on port 8080 (http) with context path '/'
+2024-10-30 10:53:56,826 INFO o.s.b.StartupInfoLogger [restartedMain] Started FormationApplication in 0.816 seconds (process running for 72.669)
+2024-10-30 10:53:56,827 INFO o.s.b.d.a.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2024-10-30 10:53:56,827 INFO c.f.FormationApplication [restartedMain] 
+--------------------------------------------
+Application URLs:
+--------------------------------------------
+Active Profile: dev
+Swagger UI: http://localhost:8080/swagger-ui.html
+H2 Console: http://localhost:8080/h2-console
+SonarQube: http://localhost:9000
+--------------------------------------------
+
+2024-10-30 10:54:01,716 INFO o.a.j.l.DirectJDKLog [http-nio-8080-exec-5] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30 10:54:01,716 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-5] Initializing Servlet 'dispatcherServlet'
+2024-10-30 10:54:01,718 INFO o.s.w.s.FrameworkServlet [http-nio-8080-exec-5] Completed initialization in 2 ms
+2024-10-30 10:54:01,722 ERROR c.f.e.GlobalExceptionHandler [http-nio-8080-exec-5] Unexpected error: No static resource favicon.ico.
+org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.
+	at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
+	at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)
+2024-10-30 10:54:01,726 WARN o.s.w.s.h.AbstractHandlerExceptionResolver [http-nio-8080-exec-5] Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico.]
