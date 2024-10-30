@@ -35,7 +35,7 @@ A comprehensive training center management system built with Spring Boot, provid
 - **API Documentation**: OpenAPI 3.0 (Swagger)
 - **Testing**: JUnit 5, MockMvc
 - **Build Tool**: Maven
-- **Java Version**: 17
+- **Java Version**: 8
 
 ## 📚 API Documentation
 
@@ -47,7 +47,7 @@ The API documentation is available through Swagger UI:
 
 ### Prerequisites
 
-- Java 17 or higher
+- Java 8 or higher
 - Maven 3.6 or higher
 - PostgreSQL (for production)
 
