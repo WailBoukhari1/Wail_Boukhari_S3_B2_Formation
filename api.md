@@ -24,18 +24,6 @@ Creates a new trainer in the system.
 }
 ```
 
-**Response:** (201 Created)
-```json
-{
-  "id": 1,
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "john.doe@example.com",
-  "specialty": "Java Development",
-  "phoneNumber": "+1234567890"
-}
-```
-
 ### Get Trainer by ID
 **GET** `/api/trainers/{id}`
 
@@ -193,13 +181,15 @@ Creates a new trainer in the system.
 **Request Body:**
 ```json
 {
-  "title": "Advanced Java Programming",
-  "description": "Deep dive into Java programming concepts",
-  "level": "ADVANCED",
-  "startDate": "2024-03-01",
+   "title": "Test Spring Boot Course",
+  "level": "Intermediate",
+  "prerequisites": "Java Core, Basic Spring",
+  "minCapacity": 5,
+  "maxCapacity": 20,
+  "currentCapacity": 0,
+  "startDate": "2024-04-01",
   "endDate": "2024-06-30",
-  "prerequisites": ["Basic Java Knowledge", "OOP Concepts"],
-  "capacity": 25
+  "status": "PLANNED"
 }
 ```
 
@@ -215,13 +205,15 @@ Creates a new trainer in the system.
 **Request Body:**
 ```json
 {
-  "title": "Advanced Java Programming",
-  "description": "Updated course description",
-  "level": "ADVANCED",
-  "startDate": "2024-03-01",
+  "title": "Test Spring Boot Course updated",
+  "level": "Intermediate",
+  "prerequisites": "Java Core, Basic Spring",
+  "minCapacity": 5,
+  "maxCapacity": 10,
+  "currentCapacity": 0,
+  "startDate": "2024-04-01",
   "endDate": "2024-06-30",
-  "prerequisites": ["Basic Java Knowledge", "OOP Concepts"],
-  "capacity": 30
+  "status": "PLANNED"
 }
 ```
 
