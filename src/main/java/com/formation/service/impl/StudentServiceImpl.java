@@ -5,12 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.formation.entity.Student;
-import com.formation.exception.BusinessException;
-import com.formation.exception.ResourceNotFoundException;
 import com.formation.repository.StudentRepository;
 import com.formation.service.StudentService;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 @Transactional
@@ -21,8 +19,9 @@ public class StudentServiceImpl implements StudentService {
     
     @Override
     public Student save(Student student) {
+        validateBusinessRules(student);
         if (studentRepository.existsByEmail(student.getEmail())) {
-            throw new BusinessException(BusinessException.studentEmailExists(student.getEmail()));
+            throw new EntityNotFoundException("Student with email " + student.getEmail() + " already exists");
         }
         return studentRepository.save(student);
     }
@@ -30,7 +29,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student findById(Long id) {
         return studentRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException(ResourceNotFoundException.studentNotFound(id)));
+            .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + id));
     }
     
     @Override
@@ -44,9 +43,10 @@ public class StudentServiceImpl implements StudentService {
         
         if (!existingStudent.getEmail().equals(student.getEmail()) && 
             studentRepository.existsByEmail(student.getEmail())) {
-            throw new BusinessException(BusinessException.studentEmailExists(student.getEmail()));
+            throw new EntityNotFoundException("Student with email " + student.getEmail() + " already exists");
         }
         
+        validateBusinessRules(student);
         return studentRepository.save(student);
     }
     
@@ -54,7 +54,7 @@ public class StudentServiceImpl implements StudentService {
     public void delete(Long id) {
         Student student = findById(id);
         if (student.getCourse() != null) {
-            throw new BusinessException("Cannot delete student enrolled in a course");
+            throw new EntityNotFoundException("Cannot delete student enrolled in a course");
         }
         studentRepository.deleteById(id);
     }
@@ -82,5 +82,18 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Page<Student> findByLastNameAndFirstName(String lastName, String firstName, Pageable pageable) {
         return studentRepository.findByLastNameAndFirstName(lastName, firstName, pageable);
+    }
+    
+    private void validateBusinessRules(Student student) {
+        validateEnrollmentRules(student);
+    }
+
+    private void validateEnrollmentRules(Student student) {
+        if (student.getCourse() != null && student.getClassRoom() == null) {
+            throw new EntityNotFoundException("Student enrolled in a course must be assigned to a classroom");
+        }
+        if (student.getClassRoom() != null && !student.getClassRoom().isAvailable()) {
+            throw new EntityNotFoundException("Selected classroom has reached maximum capacity");
+        }
     }
 }

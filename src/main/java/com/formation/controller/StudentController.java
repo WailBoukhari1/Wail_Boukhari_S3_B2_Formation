@@ -7,30 +7,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.formation.entity.Student;
+import com.formation.entity.Course;
+import com.formation.service.CourseService;
 import com.formation.service.StudentService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/students")
@@ -41,21 +34,33 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private CourseService courseService;
 
     @Operation(summary = "Create a new student")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Student created successfully"),
+        @ApiResponse(responseCode = "201", description = "Student created successfully",
+            content = @Content(schema = @Schema(implementation = Student.class))),
         @ApiResponse(responseCode = "400", description = "Invalid input or validation failed"),
         @ApiResponse(responseCode = "409", description = "Student with same email already exists")
     })
     @PostMapping
     public ResponseEntity<Student> createStudent(
             @Parameter(description = "Student to create", required = true) 
-            @Valid @RequestBody(required = true) Student student) {
+            @RequestBody(required = true) Student student) {
         if (student == null) {
-            throw new ValidationException("Request body cannot be null");
+            throw new IllegalArgumentException("Request body cannot be null");
         }
-        return new ResponseEntity<>(studentService.save(student), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<>(studentService.save(student), HttpStatus.CREATED);
+        } catch (Exception e) {
+            if (e.getMessage().contains("email already exists")) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, 
+                    "Email " + student.getEmail() + " already exists");
+            }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+                "Failed to create student: " + e.getMessage());
+        }
     }
 
     @Operation(summary = "Get a student by ID")
@@ -66,8 +71,13 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudentById(
             @Parameter(description = "ID of the student") 
-            @PathVariable @Min(value = 1, message = "ID must be positive") Long id) {
-        return ResponseEntity.ok(studentService.findById(id));
+            @PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(studentService.findById(id));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                "Student not found with id: " + id);
+        }
     }
 
     @Operation(summary = "Get all students with pagination")
@@ -94,15 +104,27 @@ public class StudentController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<Student> updateStudent(
-            @Parameter(description = "ID of the student to update") 
-            @PathVariable @Min(value = 1, message = "ID must be positive") Long id,
+            @Parameter(description = "Student ID") 
+            @PathVariable Long id,
             @Parameter(description = "Updated student details") 
-            @Valid @RequestBody(required = true) Student student) {
+            @RequestBody Student student) {
         if (student == null) {
-            throw new ValidationException("Request body cannot be null");
+            throw new IllegalArgumentException("Request body cannot be null");
         }
-        student.setId(id);
-        return ResponseEntity.ok(studentService.update(student));
+        try {
+            student.setId(id);
+            return ResponseEntity.ok(studentService.update(student));
+        } catch (Exception e) {
+            if (e.getMessage().contains("not found")) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                    "Student not found with id: " + id);
+            } else if (e.getMessage().contains("email already exists")) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, 
+                    "Email " + student.getEmail() + " already exists");
+            }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+                "Failed to update student: " + e.getMessage());
+        }
     }
 
     @Operation(summary = "Delete a student")
@@ -113,10 +135,19 @@ public class StudentController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(
-            @Parameter(description = "ID of the student to delete") 
-            @PathVariable @Min(value = 1, message = "ID must be positive") Long id) {
-        studentService.delete(id);
-        return ResponseEntity.noContent().build();
+            @Parameter(description = "Student ID") 
+            @PathVariable Long id) {
+        try {
+            studentService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            if (e.getMessage().contains("enrolled in a course")) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+                    "Cannot delete student who is enrolled in a course");
+            }
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                "Student not found with id: " + id);
+        }
     }
 
     @Operation(summary = "Search students by keyword")
@@ -127,9 +158,12 @@ public class StudentController {
     @GetMapping("/search")
     public ResponseEntity<Page<Student>> searchStudents(
             @Parameter(description = "Search keyword") 
-            @RequestParam @NotBlank(message = "Search keyword cannot be empty") String keyword,
+            @RequestParam String keyword,
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
+        if (keyword.trim().length() < 2) {
+            throw new IllegalArgumentException("Search term must be at least 2 characters long");
+        }
         Page<Student> students = studentService.search(keyword, pageable);
         return students.hasContent() 
             ? ResponseEntity.ok(students)
@@ -145,7 +179,7 @@ public class StudentController {
     @GetMapping("/level/{level}")
     public ResponseEntity<Page<Student>> getStudentsByLevel(
             @Parameter(description = "Student level") 
-            @PathVariable @NotBlank(message = "Level cannot be empty") String level,
+            @PathVariable String level,
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
         Page<Student> students = studentService.findByLevel(level, pageable);
@@ -162,13 +196,18 @@ public class StudentController {
     @GetMapping("/course/{courseId}")
     public ResponseEntity<Page<Student>> getStudentsByCourse(
             @Parameter(description = "Course ID") 
-            @PathVariable @Min(value = 1, message = "Course ID must be positive") Long courseId,
+            @PathVariable Long courseId,
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
-        Page<Student> students = studentService.findByCourseId(courseId, pageable);
-        return students.hasContent() 
-            ? ResponseEntity.ok(students)
-            : ResponseEntity.noContent().build();
+        try {
+            Page<Student> students = studentService.findByCourseId(courseId, pageable);
+            return students.hasContent() 
+                ? ResponseEntity.ok(students)
+                : ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                "Course not found with id: " + courseId);
+        }
     }
 
     @Operation(summary = "Get students by classroom")
@@ -179,13 +218,18 @@ public class StudentController {
     @GetMapping("/classroom/{classRoomId}")
     public ResponseEntity<Page<Student>> getStudentsByClassRoom(
             @Parameter(description = "Classroom ID") 
-            @PathVariable @Min(value = 1, message = "Classroom ID must be positive") Long classRoomId,
+            @PathVariable Long classRoomId,
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
-        Page<Student> students = studentService.findByClassRoomId(classRoomId, pageable);
-        return students.hasContent() 
-            ? ResponseEntity.ok(students)
-            : ResponseEntity.noContent().build();
+        try {
+            Page<Student> students = studentService.findByClassRoomId(classRoomId, pageable);
+            return students.hasContent() 
+                ? ResponseEntity.ok(students)
+                : ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                "Classroom not found with id: " + classRoomId);
+        }
     }
 
     @Operation(summary = "Get students by name")
@@ -196,14 +240,37 @@ public class StudentController {
     @GetMapping("/name")
     public ResponseEntity<Page<Student>> getStudentsByName(
             @Parameter(description = "Student's last name") 
-            @RequestParam @NotBlank(message = "Last name cannot be empty") String lastName,
+            @RequestParam String lastName,
             @Parameter(description = "Student's first name") 
-            @RequestParam @NotBlank(message = "First name cannot be empty") String firstName,
+            @RequestParam String firstName,
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
         Page<Student> students = studentService.findByLastNameAndFirstName(lastName, firstName, pageable);
         return students.hasContent() 
             ? ResponseEntity.ok(students)
+            : ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Get courses by date range")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Courses retrieved successfully"),
+        @ApiResponse(responseCode = "204", description = "No courses found for this date range"),
+        @ApiResponse(responseCode = "400", description = "Invalid date range")
+    })
+    @GetMapping("/date-range")
+    public ResponseEntity<Page<Course>> getCoursesByDateRange(
+            @Parameter(description = "Start date (YYYY-MM-DD)", required = true) 
+            @RequestParam LocalDate startDate,
+            @Parameter(description = "End date (YYYY-MM-DD)", required = true) 
+            @RequestParam LocalDate endDate,
+            @Parameter(description = "Pagination parameters") 
+            @PageableDefault(size = 10, sort = "startDate") Pageable pageable) {
+        if (startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date must be before end date");
+        }
+        Page<Course> courses = courseService.findByDateRange(startDate, endDate, pageable);
+        return courses.hasContent() 
+            ? ResponseEntity.ok(courses)
             : ResponseEntity.noContent().build();
     }
 }

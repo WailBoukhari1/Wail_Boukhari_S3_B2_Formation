@@ -26,21 +26,24 @@ public class Trainer {
     
     @NotBlank(message = "Last name is required")
     @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
+    @Pattern(regexp = "^[a-zA-Z\\s-']+$", message = "Last name can only contain letters, spaces, hyphens and apostrophes")
     @Column(nullable = false, length = 50)
     private String lastName;
     
     @NotBlank(message = "First name is required")
     @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
+    @Pattern(regexp = "^[a-zA-Z\\s-']+$", message = "First name can only contain letters, spaces, hyphens and apostrophes")
     @Column(nullable = false, length = 50)
     private String firstName;
     
-    @Email(message = "Email must be valid")
+    @Email(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "Invalid email format")
     @NotBlank(message = "Email is required")
     @Column(nullable = false, unique = true, length = 100)
     private String email;
     
     @NotBlank(message = "Specialty is required")
     @Size(min = 2, max = 50, message = "Specialty must be between 2 and 50 characters")
+    @Pattern(regexp = "^[a-zA-Z\\s-']+$", message = "Specialty can only contain letters, spaces, hyphens and apostrophes")
     @Column(nullable = false, length = 50)
     private String specialty;
     

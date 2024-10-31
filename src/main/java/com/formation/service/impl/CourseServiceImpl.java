@@ -1,20 +1,16 @@
 package com.formation.service.impl;
 
 import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.formation.entity.Course;
-import com.formation.exception.BusinessException;
-import com.formation.exception.ResourceNotFoundException;
-import com.formation.exception.ValidationException;
 import com.formation.repository.CourseRepository;
 import com.formation.service.CourseService;
 import com.formation.utils.DateUtils;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 @Transactional
@@ -25,14 +21,14 @@ public class CourseServiceImpl implements CourseService {
     
     @Override
     public Course save(Course course) {
-        validateCourse(course);
+        validateBusinessRules(course);
         return courseRepository.save(course);
     }
     
     @Override
     public Course findById(Long id) {
         return courseRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException(ResourceNotFoundException.courseNotFound(id)));
+            .orElseThrow(() -> new EntityNotFoundException("Course not found with id: " + id));
     }
     
     @Override
@@ -42,8 +38,8 @@ public class CourseServiceImpl implements CourseService {
     
     @Override
     public Course update(Course course) {
-        Course existingCourse = findById(course.getId());
-        validateCourse(course);
+        findById(course.getId());
+        validateBusinessRules(course);
         return courseRepository.save(course);
     }
     
@@ -51,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
     public void delete(Long id) {
         Course course = findById(id);
         if (!course.getStudents().isEmpty()) {
-            throw new BusinessException("Cannot delete course with enrolled students");
+            throw new EntityNotFoundException("Cannot delete course with enrolled students");
         }
         courseRepository.deleteById(id);
     }
@@ -63,12 +59,7 @@ public class CourseServiceImpl implements CourseService {
     
     @Override
     public Page<Course> findByDateRange(LocalDate startDate, LocalDate endDate, Pageable pageable) {
-        if (startDate == null || endDate == null) {
-            throw new ValidationException("Start date and end date cannot be null");
-        }
-        if (startDate.isAfter(endDate)) {
-            throw new BusinessException("Start date must be before or equal to end date");
-        }
+        validateDateRange(startDate, endDate);
         return courseRepository.findByDateRange(startDate, endDate, pageable);
     }
     
@@ -102,18 +93,23 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findCoursesWithoutTrainer(pageable);
     }
     
-    private void validateCourse(Course course) {
-        if (course == null) {
-            throw new ValidationException(ValidationException.NULL_COURSE);
+    private void validateBusinessRules(Course course) {
+        validateDateRange(course.getStartDate(), course.getEndDate());
+        validateCapacity(course);
+    }
+    
+    private void validateDateRange(LocalDate startDate, LocalDate endDate) {
+        if (!DateUtils.isDateRangeValid(startDate, endDate)) {
+            throw new EntityNotFoundException("Start date must be before or equal to end date");
         }
-        if (!DateUtils.isDateRangeValid(course.getStartDate(), course.getEndDate())) {
-            throw new BusinessException(BusinessException.COURSE_DATE_INVALID);
-        }
+    }
+    
+    private void validateCapacity(Course course) {
         if (course.getMinCapacity() > course.getMaxCapacity()) {
-            throw new BusinessException(BusinessException.COURSE_CAPACITY_RANGE_INVALID);
+            throw new EntityNotFoundException("Minimum capacity must be less than or equal to maximum capacity");
         }
         if (course.getMaxCapacity() < course.getCurrentCapacity()) {
-            throw new BusinessException(BusinessException.CLASSROOM_CAPACITY_INVALID);
+            throw new EntityNotFoundException("Maximum capacity cannot be less than current capacity");
         }
     }
 }
