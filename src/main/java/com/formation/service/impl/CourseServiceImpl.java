@@ -1,6 +1,7 @@
 package com.formation.service.impl;
 
 import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.formation.entity.Course;
 import com.formation.exception.BusinessException;
 import com.formation.exception.ResourceNotFoundException;
+import com.formation.exception.ValidationException;
 import com.formation.repository.CourseRepository;
 import com.formation.service.CourseService;
 import com.formation.utils.DateUtils;
@@ -30,7 +32,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course findById(Long id) {
         return courseRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceNotFoundException.courseNotFound(id)));
     }
     
     @Override
@@ -61,8 +63,11 @@ public class CourseServiceImpl implements CourseService {
     
     @Override
     public Page<Course> findByDateRange(LocalDate startDate, LocalDate endDate, Pageable pageable) {
-        if (!DateUtils.isDateRangeValid(startDate, endDate)) {
-            throw new BusinessException("Invalid date range: start date must be before or equal to end date");
+        if (startDate == null || endDate == null) {
+            throw new ValidationException("Start date and end date cannot be null");
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new BusinessException("Start date must be before or equal to end date");
         }
         return courseRepository.findByDateRange(startDate, endDate, pageable);
     }
@@ -98,14 +103,17 @@ public class CourseServiceImpl implements CourseService {
     }
     
     private void validateCourse(Course course) {
+        if (course == null) {
+            throw new ValidationException(ValidationException.NULL_COURSE);
+        }
         if (!DateUtils.isDateRangeValid(course.getStartDate(), course.getEndDate())) {
-            throw new BusinessException("Start date must be before end date");
+            throw new BusinessException(BusinessException.COURSE_DATE_INVALID);
         }
         if (course.getMinCapacity() > course.getMaxCapacity()) {
-            throw new BusinessException("Minimum capacity must be less than or equal to maximum capacity");
+            throw new BusinessException(BusinessException.COURSE_CAPACITY_RANGE_INVALID);
         }
         if (course.getMaxCapacity() < course.getCurrentCapacity()) {
-            throw new BusinessException("Maximum capacity cannot be less than current capacity");
+            throw new BusinessException(BusinessException.CLASSROOM_CAPACITY_INVALID);
         }
     }
 }

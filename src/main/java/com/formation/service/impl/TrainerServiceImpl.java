@@ -22,7 +22,7 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public Trainer save(Trainer trainer) {
         if (trainerRepository.existsByEmail(trainer.getEmail())) {
-            throw new BusinessException("A trainer with email " + trainer.getEmail() + " already exists");
+            throw new BusinessException(BusinessException.trainerEmailExists(trainer.getEmail()));
         }
         return trainerRepository.save(trainer);
     }
@@ -30,7 +30,7 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public Trainer findById(Long id) {
         return trainerRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Trainer not found with id: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceNotFoundException.trainerNotFound(id)));
     }
     
     @Override
@@ -44,7 +44,7 @@ public class TrainerServiceImpl implements TrainerService {
         
         if (!existingTrainer.getEmail().equals(trainer.getEmail()) && 
             trainerRepository.existsByEmail(trainer.getEmail())) {
-            throw new BusinessException("A trainer with email " + trainer.getEmail() + " already exists");
+            throw new BusinessException(BusinessException.trainerEmailExists(trainer.getEmail()));
         }
         
         return trainerRepository.save(trainer);
@@ -54,7 +54,7 @@ public class TrainerServiceImpl implements TrainerService {
     public void delete(Long id) {
         Trainer trainer = findById(id);
         if (!trainer.getCourses().isEmpty()) {
-            throw new BusinessException("Cannot delete trainer with assigned courses");
+            throw new BusinessException(BusinessException.TRAINER_HAS_COURSES);
         }
         trainerRepository.deleteById(id);
     }

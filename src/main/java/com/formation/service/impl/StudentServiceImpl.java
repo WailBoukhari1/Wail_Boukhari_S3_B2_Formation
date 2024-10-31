@@ -22,7 +22,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student save(Student student) {
         if (studentRepository.existsByEmail(student.getEmail())) {
-            throw new BusinessException("A student with email " + student.getEmail() + " already exists");
+            throw new BusinessException(BusinessException.studentEmailExists(student.getEmail()));
         }
         return studentRepository.save(student);
     }
@@ -30,7 +30,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student findById(Long id) {
         return studentRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceNotFoundException.studentNotFound(id)));
     }
     
     @Override
@@ -44,7 +44,7 @@ public class StudentServiceImpl implements StudentService {
         
         if (!existingStudent.getEmail().equals(student.getEmail()) && 
             studentRepository.existsByEmail(student.getEmail())) {
-            throw new BusinessException("A student with email " + student.getEmail() + " already exists");
+            throw new BusinessException(BusinessException.studentEmailExists(student.getEmail()));
         }
         
         return studentRepository.save(student);

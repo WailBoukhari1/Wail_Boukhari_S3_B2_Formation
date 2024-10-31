@@ -226,4 +226,19 @@ public class TrainerController {
             : ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Get trainers without assigned courses")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Available trainers retrieved successfully"),
+        @ApiResponse(responseCode = "204", description = "No available trainers found")
+    })
+    @GetMapping("/without-courses")
+    public ResponseEntity<Page<Trainer>> getTrainersWithoutCourses(
+            @Parameter(description = "Pagination parameters") 
+            @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
+        Page<Trainer> trainers = trainerService.findTrainersWithoutCourses(pageable);
+        return trainers.hasContent() 
+            ? ResponseEntity.ok(trainers)
+            : ResponseEntity.noContent().build();
+    }
+
 }

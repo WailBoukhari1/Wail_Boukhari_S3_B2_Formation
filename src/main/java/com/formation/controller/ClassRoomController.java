@@ -153,18 +153,32 @@ public class ClassRoomController {
     }
 
     @Operation(summary = "Get empty classrooms")
-    @ApiResponse(responseCode = "200", description = "Empty rooms retrieved successfully")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Empty classrooms retrieved successfully"),
+        @ApiResponse(responseCode = "204", description = "No empty classrooms found")
+    })
     @GetMapping("/empty")
-    public ResponseEntity<Page<ClassRoom>> getEmptyRooms(
-            @Parameter(description = "Pagination parameters") Pageable pageable) {
-        return ResponseEntity.ok(classRoomService.findEmptyRooms(pageable));
+    public ResponseEntity<Page<ClassRoom>> getEmptyClassRooms(
+            @Parameter(description = "Pagination parameters") 
+            @PageableDefault(size = 10, sort = "roomNumber") Pageable pageable) {
+        Page<ClassRoom> classRooms = classRoomService.findEmptyRooms(pageable);
+        return classRooms.hasContent() 
+            ? ResponseEntity.ok(classRooms)
+            : ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Get classrooms without trainers")
-    @ApiResponse(responseCode = "200", description = "Classrooms without trainers retrieved successfully")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Classrooms without trainers retrieved successfully"),
+        @ApiResponse(responseCode = "204", description = "No classrooms without trainers found")
+    })
     @GetMapping("/without-trainers")
-    public ResponseEntity<Page<ClassRoom>> getRoomsWithoutTrainers(
-            @Parameter(description = "Pagination parameters") Pageable pageable) {
-        return ResponseEntity.ok(classRoomService.findRoomsWithoutTrainers(pageable));
+    public ResponseEntity<Page<ClassRoom>> getClassRoomsWithoutTrainers(
+            @Parameter(description = "Pagination parameters") 
+            @PageableDefault(size = 10, sort = "roomNumber") Pageable pageable) {
+        Page<ClassRoom> classRooms = classRoomService.findRoomsWithoutTrainers(pageable);
+        return classRooms.hasContent() 
+            ? ResponseEntity.ok(classRooms)
+            : ResponseEntity.noContent().build();
     }
 }
