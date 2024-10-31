@@ -26,8 +26,6 @@ import com.formation.service.CourseService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,8 +47,7 @@ public class CourseController {
 
     @Operation(summary = "Create a new training course")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Course created successfully",
-            content = @Content(schema = @Schema(implementation = Course.class))),
+        @ApiResponse(responseCode = "201", description = "Course created successfully"),
         @ApiResponse(responseCode = "400", description = "Invalid course data or validation failed"),
         @ApiResponse(responseCode = "409", description = "Course with same title already exists")
     })
@@ -164,6 +161,7 @@ public class CourseController {
             ? ResponseEntity.ok(courses)
             : ResponseEntity.noContent().build();
     }
+
     @Operation(summary = "Get courses by trainer")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Courses retrieved"),

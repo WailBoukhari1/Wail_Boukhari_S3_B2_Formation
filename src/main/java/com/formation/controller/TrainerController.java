@@ -24,8 +24,6 @@ import com.formation.service.TrainerService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,8 +44,7 @@ public class TrainerController {
 
     @Operation(summary = "Create a new trainer")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Trainer created successfully",
-            content = @Content(schema = @Schema(implementation = Trainer.class))),
+        @ApiResponse(responseCode = "201", description = "Trainer created successfully"),
         @ApiResponse(responseCode = "400", description = "Invalid input or validation failed"),
         @ApiResponse(responseCode = "409", description = "Trainer with same email already exists")
     })
@@ -240,5 +237,4 @@ public class TrainerController {
             ? ResponseEntity.ok(trainers)
             : ResponseEntity.noContent().build();
     }
-
 }
