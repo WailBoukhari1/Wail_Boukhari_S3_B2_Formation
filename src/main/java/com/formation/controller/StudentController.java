@@ -1,5 +1,7 @@
 package com.formation.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,11 +9,25 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.formation.entity.Student;
 import com.formation.entity.Course;
+import com.formation.entity.Student;
+import com.formation.exception.DuplicateResourceException;
+import com.formation.exception.ExceptionCode;
+import com.formation.exception.ResourceInUseException;
+import com.formation.exception.ResourceNotFoundException;
+import com.formation.exception.ValidationException;
 import com.formation.service.CourseService;
 import com.formation.service.StudentService;
 
@@ -22,8 +38,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/students")
@@ -49,17 +63,16 @@ public class StudentController {
             @Parameter(description = "Student to create", required = true) 
             @RequestBody(required = true) Student student) {
         if (student == null) {
-            throw new IllegalArgumentException("Request body cannot be null");
+            throw new ValidationException(ExceptionCode.NULL_REQUEST);
         }
         try {
             return new ResponseEntity<>(studentService.save(student), HttpStatus.CREATED);
         } catch (Exception e) {
             if (e.getMessage().contains("email already exists")) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, 
-                    "Email " + student.getEmail() + " already exists");
+                throw new DuplicateResourceException(ExceptionCode.STUDENT_EMAIL_EXISTS, 
+                    student.getEmail());
             }
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "Failed to create student: " + e.getMessage());
+            throw new ValidationException(ExceptionCode.STUDENT_ENROLLMENT_FAILED, e.getMessage());
         }
     }
 
@@ -75,8 +88,7 @@ public class StudentController {
         try {
             return ResponseEntity.ok(studentService.findById(id));
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Student not found with id: " + id);
+            throw new ResourceNotFoundException(ExceptionCode.STUDENT_NOT_FOUND, id);
         }
     }
 
@@ -90,10 +102,14 @@ public class StudentController {
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "lastName", direction = Sort.Direction.ASC) 
             Pageable pageable) {
-        Page<Student> students = studentService.findAll(pageable);
-        return students.hasContent() 
-            ? ResponseEntity.ok(students)
-            : ResponseEntity.noContent().build();
+        try {
+            Page<Student> students = studentService.findAll(pageable);
+            return students.hasContent() 
+                ? ResponseEntity.ok(students)
+                : ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            throw new ValidationException(ExceptionCode.INVALID_PAGE, pageable.toString());
+        }
     }
 
     @Operation(summary = "Update a student")
@@ -104,26 +120,24 @@ public class StudentController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<Student> updateStudent(
-            @Parameter(description = "Student ID") 
+            @Parameter(description = "ID of the student") 
             @PathVariable Long id,
             @Parameter(description = "Updated student details") 
             @RequestBody Student student) {
         if (student == null) {
-            throw new IllegalArgumentException("Request body cannot be null");
+            throw new ValidationException(ExceptionCode.NULL_REQUEST);
         }
         try {
             student.setId(id);
             return ResponseEntity.ok(studentService.update(student));
         } catch (Exception e) {
             if (e.getMessage().contains("not found")) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                    "Student not found with id: " + id);
+                throw new ResourceNotFoundException(ExceptionCode.STUDENT_NOT_FOUND, id);
             } else if (e.getMessage().contains("email already exists")) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, 
-                    "Email " + student.getEmail() + " already exists");
+                throw new DuplicateResourceException(ExceptionCode.STUDENT_EMAIL_EXISTS, 
+                    student.getEmail());
             }
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                "Failed to update student: " + e.getMessage());
+            throw new ValidationException(ExceptionCode.STUDENT_ENROLLMENT_FAILED, e.getMessage());
         }
     }
 
@@ -141,12 +155,10 @@ public class StudentController {
             studentService.delete(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            if (e.getMessage().contains("enrolled in a course")) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                    "Cannot delete student who is enrolled in a course");
+            if (e.getMessage().contains("enrolled in course")) {
+                throw new ResourceInUseException(ExceptionCode.STUDENT_IN_COURSE);
             }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Student not found with id: " + id);
+            throw new ResourceNotFoundException(ExceptionCode.STUDENT_NOT_FOUND, id);
         }
     }
 
@@ -168,6 +180,7 @@ public class StudentController {
         return students.hasContent() 
             ? ResponseEntity.ok(students)
             : ResponseEntity.noContent().build();
+            
     }
 
     @Operation(summary = "Get students by level")
@@ -182,10 +195,13 @@ public class StudentController {
             @PathVariable String level,
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
-        Page<Student> students = studentService.findByLevel(level, pageable);
-        return students.hasContent() 
-            ? ResponseEntity.ok(students)
-            : ResponseEntity.noContent().build();
+        try {
+            Page<Student> students = studentService.findByLevel(level, pageable);
+            return students.hasContent() ? ResponseEntity.ok(students) : 
+                ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            throw new ValidationException(ExceptionCode.INVALID_LEVEL, level);
+        }
     }
 
     @Operation(summary = "Get students by course")
@@ -201,12 +217,10 @@ public class StudentController {
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
         try {
             Page<Student> students = studentService.findByCourseId(courseId, pageable);
-            return students.hasContent() 
-                ? ResponseEntity.ok(students)
-                : ResponseEntity.noContent().build();
+            return students.hasContent() ? ResponseEntity.ok(students) : 
+                ResponseEntity.noContent().build();
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Course not found with id: " + courseId);
+            throw new ResourceNotFoundException(ExceptionCode.COURSE_NOT_FOUND, courseId);
         }
     }
 
@@ -223,12 +237,10 @@ public class StudentController {
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
         try {
             Page<Student> students = studentService.findByClassRoomId(classRoomId, pageable);
-            return students.hasContent() 
-                ? ResponseEntity.ok(students)
-                : ResponseEntity.noContent().build();
+            return students.hasContent() ? ResponseEntity.ok(students) : 
+                ResponseEntity.noContent().build();
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Classroom not found with id: " + classRoomId);
+            throw new ResourceNotFoundException(ExceptionCode.CLASSROOM_NOT_FOUND, classRoomId);
         }
     }
 
@@ -245,10 +257,21 @@ public class StudentController {
             @RequestParam String firstName,
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
-        Page<Student> students = studentService.findByLastNameAndFirstName(lastName, firstName, pageable);
-        return students.hasContent() 
-            ? ResponseEntity.ok(students)
-            : ResponseEntity.noContent().build();
+        if (lastName == null || lastName.trim().isEmpty() || 
+            firstName == null || firstName.trim().isEmpty()) {
+            throw new ValidationException(ExceptionCode.STUDENT_INVALID_NAME, 
+                lastName + " " + firstName);
+        }
+        try {
+            Page<Student> students = studentService.findByLastNameAndFirstName(
+                lastName, firstName, pageable);
+            return students.hasContent() 
+                ? ResponseEntity.ok(students)
+                : ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            throw new ValidationException(ExceptionCode.STUDENT_SEARCH_FAILED, 
+                lastName + " " + firstName);
+        }
     }
 
     @Operation(summary = "Get courses by date range")
@@ -266,11 +289,9 @@ public class StudentController {
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "startDate") Pageable pageable) {
         if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("Start date must be before end date");
+            throw new ValidationException(ExceptionCode.INVALID_DATE_RANGE);
         }
         Page<Course> courses = courseService.findByDateRange(startDate, endDate, pageable);
-        return courses.hasContent() 
-            ? ResponseEntity.ok(courses)
-            : ResponseEntity.noContent().build();
+        return courses.hasContent() ? ResponseEntity.ok(courses) : ResponseEntity.noContent().build();
     }
 }

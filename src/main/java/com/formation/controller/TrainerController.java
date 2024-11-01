@@ -18,9 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.formation.entity.Trainer;
+import com.formation.exception.DuplicateResourceException;
+import com.formation.exception.ExceptionCode;
+import com.formation.exception.ResourceInUseException;
+import com.formation.exception.ResourceNotFoundException;
+import com.formation.exception.ValidationException;
 import com.formation.service.TrainerService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,13 +60,12 @@ public class TrainerController {
             @Parameter(description = "Trainer to create", required = true) 
             @Valid @RequestBody(required = true) Trainer trainer) {
         if (trainer == null) {
-            throw new IllegalArgumentException("Request body cannot be null");
+            throw new ValidationException(ExceptionCode.NULL_REQUEST);
         }
         try {
             return new ResponseEntity<>(trainerService.save(trainer), HttpStatus.CREATED);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, 
-                "Trainer with email " + trainer.getEmail() + " already exists");
+            throw new DuplicateResourceException(ExceptionCode.TRAINER_EMAIL_EXISTS, trainer.getEmail());
         }
     }
 
@@ -78,8 +81,7 @@ public class TrainerController {
         try {
             return ResponseEntity.ok(trainerService.findById(id));
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Trainer not found with id: " + id);
+            throw new ResourceNotFoundException(ExceptionCode.TRAINER_NOT_FOUND, id);
         }
     }
 
@@ -112,18 +114,16 @@ public class TrainerController {
             @Parameter(description = "Updated trainer details") 
             @Valid @RequestBody(required = true) Trainer trainer) {
         if (trainer == null) {
-            throw new IllegalArgumentException("Request body cannot be null");
+            throw new ValidationException(ExceptionCode.NULL_REQUEST);
         }
         try {
             trainer.setId(id);
             return ResponseEntity.ok(trainerService.update(trainer));
         } catch (Exception e) {
             if (e.getMessage().contains("not found")) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                    "Trainer not found with id: " + id);
+                throw new ResourceNotFoundException(ExceptionCode.TRAINER_NOT_FOUND, id);
             }
-            throw new ResponseStatusException(HttpStatus.CONFLICT, 
-                "Trainer with email " + trainer.getEmail() + " already exists");
+            throw new DuplicateResourceException(ExceptionCode.TRAINER_EMAIL_EXISTS, trainer.getEmail());
         }
     }
 
@@ -142,11 +142,9 @@ public class TrainerController {
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             if (e.getMessage().contains("active courses")) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                    "Cannot delete trainer with active courses");
+                throw new ResourceInUseException(ExceptionCode.TRAINER_MAX_COURSES);
             }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Trainer not found with id: " + id);
+            throw new ResourceNotFoundException(ExceptionCode.TRAINER_NOT_FOUND, id);
         }
     }
 
@@ -162,12 +160,10 @@ public class TrainerController {
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
         if (keyword.trim().length() < 2) {
-            throw new IllegalArgumentException("Search keyword must be at least 2 characters long");
+            throw new ValidationException(ExceptionCode.INVALID_SEARCH, 2);
         }
         Page<Trainer> trainers = trainerService.search(keyword, pageable);
-        return trainers.hasContent() 
-            ? ResponseEntity.ok(trainers)
-            : ResponseEntity.noContent().build();
+        return trainers.hasContent() ? ResponseEntity.ok(trainers) : ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Get trainers by email")
@@ -181,10 +177,11 @@ public class TrainerController {
             @PathVariable @Email(message = "Invalid email format") String email,
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new ValidationException(ExceptionCode.INVALID_EMAIL, email);
+        }
         Page<Trainer> trainers = trainerService.findByEmail(email, pageable);
-        return trainers.hasContent() 
-            ? ResponseEntity.ok(trainers)
-            : ResponseEntity.noContent().build();
+        return trainers.hasContent() ? ResponseEntity.ok(trainers) : ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Get trainers by specialty")
@@ -236,12 +233,9 @@ public class TrainerController {
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
         try {
             Page<Trainer> trainers = trainerService.findByClassRoomId(classRoomId, pageable);
-            return trainers.hasContent() 
-                ? ResponseEntity.ok(trainers)
-                : ResponseEntity.noContent().build();
+            return trainers.hasContent() ? ResponseEntity.ok(trainers) : ResponseEntity.noContent().build();
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Classroom not found with id: " + classRoomId);
+            throw new ResourceNotFoundException(ExceptionCode.CLASSROOM_NOT_FOUND, classRoomId);
         }
     }
 
@@ -256,10 +250,11 @@ public class TrainerController {
             @RequestParam @Min(value = 0, message = "Max courses cannot be negative") int maxCourses,
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "lastName") Pageable pageable) {
+        if (maxCourses < 0) {
+            throw new ValidationException(ExceptionCode.INVALID_CAPACITY, 0, Integer.MAX_VALUE);
+        }
         Page<Trainer> trainers = trainerService.findAvailableTrainers(maxCourses, pageable);
-        return trainers.hasContent() 
-            ? ResponseEntity.ok(trainers)
-            : ResponseEntity.noContent().build();
+        return trainers.hasContent() ? ResponseEntity.ok(trainers) : ResponseEntity.noContent().build();
     }
 
 }

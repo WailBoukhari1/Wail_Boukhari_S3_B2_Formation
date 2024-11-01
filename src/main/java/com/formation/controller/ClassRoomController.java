@@ -6,10 +6,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.entity.ClassRoom;
+import com.formation.exception.DuplicateResourceException;
+import com.formation.exception.ExceptionCode;
+import com.formation.exception.ResourceInUseException;
+import com.formation.exception.ResourceNotFoundException;
+import com.formation.exception.ValidationException;
 import com.formation.service.ClassRoomService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,13 +59,13 @@ public class ClassRoomController {
             @Parameter(description = "Classroom to create", required = true) 
             @Valid @RequestBody(required = true) ClassRoom classRoom) {
         if (classRoom == null) {
-            throw new IllegalArgumentException("Request body cannot be null");
+            throw new ValidationException(ExceptionCode.NULL_REQUEST);
         }
         try {
             return new ResponseEntity<>(classRoomService.save(classRoom), HttpStatus.CREATED);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, 
-                "Classroom with number " + classRoom.getRoomNumber() + " already exists");
+            throw new DuplicateResourceException(ExceptionCode.CLASSROOM_NUMBER_EXISTS, 
+                classRoom.getRoomNumber());
         }
     }
 
@@ -66,8 +80,7 @@ public class ClassRoomController {
         try {
             return ResponseEntity.ok(classRoomService.findById(id));
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Classroom not found with id: " + id);
+            throw new ResourceNotFoundException(ExceptionCode.CLASSROOM_NOT_FOUND, id);
         }
     }
 
@@ -98,18 +111,17 @@ public class ClassRoomController {
             @Parameter(description = "ID of the classroom to update") @PathVariable Long id,
             @Parameter(description = "Updated classroom details") @Valid @RequestBody ClassRoom classRoom) {
         if (classRoom == null) {
-            throw new IllegalArgumentException("Request body cannot be null");
+            throw new ValidationException(ExceptionCode.NULL_REQUEST);
         }
         try {
             classRoom.setId(id);
             return ResponseEntity.ok(classRoomService.update(classRoom));
         } catch (Exception e) {
             if (e.getMessage().contains("not found")) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                    "Classroom not found with id: " + id);
+                throw new ResourceNotFoundException(ExceptionCode.CLASSROOM_NOT_FOUND, id);
             }
-            throw new ResponseStatusException(HttpStatus.CONFLICT, 
-                "Classroom with number " + classRoom.getRoomNumber() + " already exists");
+            throw new DuplicateResourceException(ExceptionCode.CLASSROOM_NUMBER_EXISTS, 
+                classRoom.getRoomNumber());
         }
     }
 
@@ -127,14 +139,11 @@ public class ClassRoomController {
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             if (e.getMessage().contains("enrolled students")) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, 
-                    "Cannot delete classroom with enrolled students");
+                throw new ResourceInUseException(ExceptionCode.CLASSROOM_WITH_STUDENTS);
             } else if (e.getMessage().contains("assigned trainers")) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, 
-                    "Cannot delete classroom with assigned trainers");
+                throw new ResourceInUseException(ExceptionCode.CLASSROOM_WITH_TRAINERS);
             }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Classroom not found with id: " + id);
+            throw new ResourceNotFoundException(ExceptionCode.CLASSROOM_NOT_FOUND, id);
         }
     }
 
@@ -150,7 +159,7 @@ public class ClassRoomController {
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "id") Pageable pageable) {
         if (keyword.trim().length() < 2) {
-            throw new IllegalArgumentException("Search term must be at least 2 characters long");
+            throw new ValidationException(ExceptionCode.INVALID_SEARCH, 2);
         }
         Page<ClassRoom> results = classRoomService.search(keyword, pageable);
         return results.hasContent() ? ResponseEntity.ok(results) : ResponseEntity.noContent().build();
@@ -167,25 +176,44 @@ public class ClassRoomController {
             @RequestParam @Min(value = 1, message = "Capacity must be at least 1") int capacity,
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "currentCapacity") Pageable pageable) {
+        if (capacity < 1) {
+            throw new ValidationException(ExceptionCode.INVALID_CAPACITY, 1, Integer.MAX_VALUE);
+        }
         Page<ClassRoom> rooms = classRoomService.findAvailableRooms(capacity, pageable);
         return rooms.hasContent() ? ResponseEntity.ok(rooms) : ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Get empty classrooms")
-    @ApiResponse(responseCode = "200", description = "Empty rooms retrieved successfully")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Empty rooms retrieved successfully"),
+        @ApiResponse(responseCode = "204", description = "No empty rooms found"),
+        @ApiResponse(responseCode = "400", description = "Invalid pagination parameters")
+    })
     @GetMapping("/empty")
     public ResponseEntity<Page<ClassRoom>> getEmptyRooms(
             @Parameter(description = "Pagination parameters") Pageable pageable) {
-        Page<ClassRoom> rooms = classRoomService.findEmptyRooms(pageable);
-        return ResponseEntity.ok(rooms);
+        try {
+            Page<ClassRoom> rooms = classRoomService.findEmptyRooms(pageable);
+            return rooms.hasContent() ? ResponseEntity.ok(rooms) : ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            throw new ValidationException(ExceptionCode.INVALID_ROOM_NUMBER, "Invalid pagination parameters");
+        }
     }
 
     @Operation(summary = "Get classrooms without trainers")
-    @ApiResponse(responseCode = "200", description = "Classrooms without trainers retrieved successfully")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Classrooms without trainers retrieved successfully"),
+        @ApiResponse(responseCode = "204", description = "No classrooms without trainers found"),
+        @ApiResponse(responseCode = "400", description = "Invalid pagination parameters")
+    })
     @GetMapping("/without-trainers")
     public ResponseEntity<Page<ClassRoom>> getRoomsWithoutTrainers(
             @Parameter(description = "Pagination parameters") Pageable pageable) {
-        Page<ClassRoom> rooms = classRoomService.findRoomsWithoutTrainers(pageable);
-        return ResponseEntity.ok(rooms);
+        try {
+            Page<ClassRoom> rooms = classRoomService.findRoomsWithoutTrainers(pageable);
+            return rooms.hasContent() ? ResponseEntity.ok(rooms) : ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            throw new ValidationException(ExceptionCode.INVALID_ROOM_NUMBER, "Invalid pagination parameters");
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.formation.controller;
 
 import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,10 +9,24 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.entity.Course;
+import com.formation.exception.DuplicateResourceException;
+import com.formation.exception.ExceptionCode;
+import com.formation.exception.ResourceInUseException;
+import com.formation.exception.ResourceNotFoundException;
+import com.formation.exception.ValidationException;
 import com.formation.service.CourseService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,13 +63,12 @@ public class CourseController {
             @Parameter(description = "Course details", required = true) 
             @Valid @RequestBody(required = true) Course course) {
         if (course == null) {
-            throw new IllegalArgumentException("Request body cannot be null");
+            throw new ValidationException(ExceptionCode.NULL_REQUEST);
         }
         try {
             return new ResponseEntity<>(courseService.save(course), HttpStatus.CREATED);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, 
-                "Course with title '" + course.getTitle() + "' already exists");
+            throw new DuplicateResourceException(ExceptionCode.COURSE_TITLE_EXISTS, course.getTitle());
         }
     }
 
@@ -70,8 +84,7 @@ public class CourseController {
         try {
             return ResponseEntity.ok(courseService.findById(id));
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Course not found with id: " + id);
+            throw new ResourceNotFoundException(ExceptionCode.COURSE_NOT_FOUND, id);
         }
     }
 
@@ -104,18 +117,16 @@ public class CourseController {
             @Parameter(description = "Updated course details") 
             @Valid @RequestBody(required = true) Course course) {
         if (course == null) {
-            throw new IllegalArgumentException("Request body cannot be null");
+            throw new ValidationException(ExceptionCode.NULL_REQUEST);
         }
         try {
             course.setId(id);
             return ResponseEntity.ok(courseService.update(course));
         } catch (Exception e) {
             if (e.getMessage().contains("not found")) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                    "Course not found with id: " + id);
+                throw new ResourceNotFoundException(ExceptionCode.COURSE_NOT_FOUND, id);
             }
-            throw new ResponseStatusException(HttpStatus.CONFLICT, 
-                "Course with title '" + course.getTitle() + "' already exists");
+            throw new DuplicateResourceException(ExceptionCode.COURSE_TITLE_EXISTS, course.getTitle());
         }
     }
 
@@ -134,11 +145,11 @@ public class CourseController {
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             if (e.getMessage().contains("in progress")) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
-                    "Cannot delete a course that is in progress");
+                throw new ResourceInUseException(ExceptionCode.COURSE_IN_PROGRESS);
+            } else if (e.getMessage().contains("enrolled students")) {
+                throw new ResourceInUseException(ExceptionCode.COURSE_WITH_STUDENTS);
             }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Course not found with id: " + id);
+            throw new ResourceNotFoundException(ExceptionCode.COURSE_NOT_FOUND, id);
         }
     }
 
@@ -157,7 +168,7 @@ public class CourseController {
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "startDate") Pageable pageable) {
         if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("Start date must be before end date");
+            throw new ValidationException(ExceptionCode.INVALID_DATE_RANGE);
         }
         Page<Course> courses = courseService.findByDateRange(startDate, endDate, pageable);
         return courses.hasContent() ? ResponseEntity.ok(courses) : ResponseEntity.noContent().build();
@@ -175,7 +186,7 @@ public class CourseController {
             @Parameter(description = "Pagination parameters") 
             @PageableDefault(size = 10, sort = "startDate") Pageable pageable) {
         if (keyword.trim().length() < 2) {
-            throw new IllegalArgumentException("Search term must be at least 2 characters long");
+            throw new ValidationException(ExceptionCode.INVALID_SEARCH, 2);
         }
         Page<Course> courses = courseService.search(keyword, pageable);
         return courses.hasContent() ? ResponseEntity.ok(courses) : ResponseEntity.noContent().build();
@@ -196,8 +207,7 @@ public class CourseController {
             Page<Course> courses = courseService.findByTrainerId(trainerId, pageable);
             return courses.hasContent() ? ResponseEntity.ok(courses) : ResponseEntity.noContent().build();
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                "Trainer not found with id: " + trainerId);
+            throw new ResourceNotFoundException(ExceptionCode.TRAINER_NOT_FOUND, trainerId);
         }
     }
 }
